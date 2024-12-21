@@ -1,23 +1,31 @@
-import { useState, useEffect } from "react";
-import data from "./data.json";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(3);
   const [isGenerated, setIsGenerated] = useState(false);
   const [name, setName] = useState([]);
-  // const [surnames, setSurnames] = useState([]);
 
-  const handleGeneratingName = (data) => {
-    // setSurnames(data.surnames);
-    console.log(data.surnames);
-    console.log(data.given_names);
+  const handleGeneratingName = () => {
+    fetch("/api/data.json")
+      .then((response) => response.json())
+      .then((data) => {
+        const surnames = getRandomElement(data.surnames, count);
+        const givenNames = getRandomElement(data.given_names, count);
+        setName(
+          surnames.map((surname, index) => `${surname} ${givenNames[index]}`),
+        );
+        setIsGenerated(true);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const getRandomElement = (array, count) => {
+    return [...array].sort(() => Math.random() - 0.5).slice(0, count);
   };
 
   useEffect(() => {
-    // console.log(data);
-    // console.log(surnames);
-    handleGeneratingName(data);
-  }, []);
+    console.log(name);
+  }, [name]);
 
   return (
     <>
@@ -36,14 +44,16 @@ function App() {
             <button
               type="button"
               className="absolute top-0.5 bottom-0.5 right-0.5 box-border rounded-xl px-4 bg-cyan-950 uppercase"
+              onClick={handleGeneratingName}
             >
               Generate
             </button>
           </div>
           <div className="w-full min-h-10 p-3 rounded-xl bg-cyan-900">
             {isGenerated ? (
-              <p>name</p>
+              name.map((person, index) => <p key={index}>{person}</p>)
             ) : (
+              // name.map((person, index) => <p key={index}>{person}</p>)
               <p>
                 <span className="uppercase">Click on generate button</span>{" "}
                 Rushil Aggarwal
