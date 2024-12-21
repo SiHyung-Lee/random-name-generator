@@ -10,11 +10,13 @@ function App() {
 
     fetch("/api/data.json")
       .then((response) => response.json())
-      .then((data) => {
-        const surnames = getRandomElement(data.surnames, count);
-        const givenNames = getRandomElement(data.given_names, count);
+      .then(({ given_names, surnames }) => {
+        const randomSurnames = getRandomElement(surnames, count);
+        const randomGivenNames = getRandomElement(given_names, count);
         setName(
-          surnames.map((surname, index) => `${surname} ${givenNames[index]}`),
+          randomSurnames.map(
+            (surname, index) => `${surname} ${randomGivenNames[index]}`,
+          ),
         );
         setIsGenerated(true);
       })
@@ -45,7 +47,7 @@ function App() {
               type="number"
               className="w-full h-full bg-transparent"
               value={count}
-              onChange={(event) => setCount(event.target.value)}
+              onChange={(event) => setCount(Number(event.target.value))}
             />
             <button
               type="submit"
