@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(3);
+  const [count, setCount] = useState(1);
   const [isGenerated, setIsGenerated] = useState(false);
   const [name, setName] = useState([]);
 
