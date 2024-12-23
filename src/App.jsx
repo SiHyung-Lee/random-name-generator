@@ -8,7 +8,7 @@ function App() {
   const handleGeneratingName = (event) => {
     event.preventDefault();
 
-    fetch("/api/data.json")
+    fetch("/data.json")
       .then((response) => response.json())
       .then(({ given_names, surnames }) => {
         const randomSurnames = getRandomElement(surnames, count);
