@@ -4,9 +4,16 @@ function App() {
   const [count, setCount] = useState(1);
   const [isGenerated, setIsGenerated] = useState(false);
   const [name, setName] = useState([]);
+  const [limit, setLimit] = useState(1);
 
   const handleGeneratingName = (event) => {
     event.preventDefault();
+    handleLimitUpdate();
+    console.log(`count : ${count}, limit : ${limit}`);
+    if (count > 10 || limit > 10 || count + limit > 10) {
+      alert("You can generate only 10 names");
+      return;
+    }
 
     fetch("/data.json")
       .then((response) => response.json())
@@ -24,12 +31,14 @@ function App() {
   };
 
   const getRandomElement = (array, count) => {
-    console.log(array);
     return [...array].sort(() => Math.random() - 0.5).slice(0, count);
   };
 
+  const handleLimitUpdate = () => {
+    setLimit((prev) => prev + count);
+  };
   useEffect(() => {
-    // console.log(name);
+    console.log(name);
   }, [name]);
 
   return (
